@@ -18,5 +18,5 @@ To get started with the Snake Chasing Food Game, follow these instructions:
 
 1. *Clone the Repository*:
    ```bash
-   git clone https://github.com/your-username/snake-chasing-food-game.git
+   git clone https://github.com/cybermax47/snake-chasing-food-game.git
    cd snake-chasing-food-game

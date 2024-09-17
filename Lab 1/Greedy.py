@@ -33,4 +33,4 @@ def greedy_guessing_game(min_range, max_range):
         guess = (min_range + max_range) // 2
 
 # Start the guessing game using the greedy search algorithm
-greedy_guessing_game(1, 100)
+greedy_guessing_game(1, 100) 

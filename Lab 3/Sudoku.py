@@ -154,3 +154,48 @@ else:
         print_grid(solution)
     else:
         print("No solution exists.")
+
+
+import networkx as nx
+import matplotlib.pyplot as plt
+
+def build_sudoku_graph():
+    """Build a graph representation of the Sudoku puzzle."""
+    G = nx.Graph()  # Create a new graph
+
+    # Add nodes for each cell in the Sudoku grid
+    for row in range(9):
+        for col in range(9):
+            node = (row, col)
+            G.add_node(node)
+
+            # Add edges for the same row and column
+            for c in range(9):
+                if c != col:
+                    G.add_edge(node, (row, c))  # Row edges
+            for r in range(9):
+                if r != row:
+                    G.add_edge(node, (r, col))  # Column edges
+
+            # Add edges for the 3x3 subgrid
+            start_row = (row // 3) * 3
+            start_col = (col // 3) * 3
+            for r in range(start_row, start_row + 3):
+                for c in range(start_col, start_col + 3):
+                    if (r, c) != node:  # Exclude the current cell
+                        G.add_edge(node, (r, c))  # Subgrid edges
+
+    return G
+
+# Example usage
+sudoku_graph = build_sudoku_graph()
+
+# Print the graph representation
+print("Graph representation of the Sudoku puzzle:")
+print(sudoku_graph)
+
+# Optionally, visualize the graph (this can take some time)
+pos = {(row, col): (col, -row) for row in range(9) for col in range(9)}  # Position for visualization
+nx.draw(sudoku_graph, pos, with_labels=True, node_size=500, node_color='lightblue', font_size=8)
+plt.title("Sudoku Graph Representation")
+plt.show()

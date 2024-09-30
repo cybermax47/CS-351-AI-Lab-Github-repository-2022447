@@ -18,23 +18,6 @@ This repository supports the structured exploration of AI concepts, empowering s
 - Experiment with **advanced computing paradigms**, including neural networks, search strategies, optimization techniques, and decision-making models.
 - Leverage **Python libraries** such as `TensorFlow`, `Keras`, `scikit-learn`, and `NumPy` for developing AI-driven solutions.
 
-### Repository Structure
-
-The repository is structured as follows:
-- **Lab_01**: Introduction to Python for AI  
-- **Lab_02**: Search Algorithms and Heuristics  
-- **Lab_03**: Machine Learning Basics  
-- **Lab_04**: Supervised Learning Techniques  
-- **Lab_05**: Unsupervised Learning Models  
-- **Lab_06**: Reinforcement Learning  
-- **Lab_07**: Neural Networks Fundamentals  
-- **Lab_08**: Deep Learning with Python  
-- **Lab_09**: Natural Language Processing (NLP)  
-- **Lab_10**: Computer Vision Algorithms  
-- **Lab_11**: AI in Robotics  
-- **Lab_12**: Final Project: Integrating AI in Real-World Applications
-
-Each lab is designed to progressively enhance your understanding of AI, equipping you with the skills to tackle complex AI challenges.
 
 ### Prerequisites
 

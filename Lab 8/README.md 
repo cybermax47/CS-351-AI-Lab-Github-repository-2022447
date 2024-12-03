@@ -1,0 +1,93 @@
+### **README: Neural Network Tasks with Iris and Wine Datasets**
+
+---
+
+#### **Overview**
+This project demonstrates building, training, and evaluating neural networks on two well-known datasets: **Iris** and **Wine**. The tasks involve modifying the architecture of the neural network and analyzing its performance. The project showcases concepts like data preprocessing, training visualization, and performance evaluation through metrics like confusion matrices and training history.
+
+---
+
+#### **Tasks Overview**
+
+##### **Task 1: Iris Dataset - Modify the Neural Network**
+1. **Objective**:  
+   To evaluate the effect of modifying a simple neural network by adding an additional hidden layer.
+   
+2. **Steps**:  
+   - **Data Preprocessing**: The Iris dataset features are standardized, and target labels are one-hot encoded.
+   - **Original Model**: A single-hidden-layer neural network is built with:
+     - 8 neurons in the hidden layer.
+     - ReLU activation for the hidden layer.
+     - Softmax activation for the output layer (3 output units for 3 classes).  
+   - **Modified Model**: An additional hidden layer with 16 neurons is added to the architecture.  
+   - **Training and Evaluation**:
+     - Both models are trained for 50 epochs with a validation split of 20%.
+     - Training and validation loss/accuracy are compared.
+     - Confusion matrices are generated for the test dataset predictions.
+
+3. **Deliverables**:  
+   - Training and validation loss/accuracy plots.
+   - Confusion matrices for the original and modified models.
+   - Comparative analysis of test accuracy.
+
+---
+
+##### **Task 2: Wine Dataset - Build and Train a Neural Network**
+1. **Objective**:  
+   To build and train a neural network for classification using the Wine dataset, exploring a more complex feature space.
+
+2. **Steps**:  
+   - **Data Preprocessing**: Features are standardized, and target labels are one-hot encoded.  
+   - **Neural Network Architecture**:  
+     - Two hidden layers:
+       - 8 neurons in the first hidden layer.
+       - 16 neurons in the second hidden layer.
+     - ReLU activation for hidden layers.
+     - Softmax activation for the output layer (3 output units for 3 classes).  
+   - **Training and Evaluation**:
+     - The model is trained for 50 epochs with a validation split of 20%.
+     - Training and validation loss/accuracy plots are generated.
+     - A confusion matrix is created for test dataset predictions.
+
+3. **Deliverables**:  
+   - Training and validation loss/accuracy plots.
+   - Confusion matrix for test dataset predictions.
+   - Evaluation of test accuracy.
+
+---
+
+#### **Results and Observations**
+1. **Iris Dataset**:  
+   - Adding an additional hidden layer improved the test accuracy slightly due to increased model capacity.
+   - The model was simple enough to perform well on the Iris dataset even with fewer layers.  
+
+2. **Wine Dataset**:  
+   - The two-layer architecture provided adequate performance for the more complex Wine dataset, which has a larger feature set and more variability.
+   - The confusion matrix highlighted the model's classification performance for the three wine classes.
+
+---
+
+#### **Key Concepts Demonstrated**
+- **Data Preprocessing**: Standardization and one-hot encoding for preparing data.  
+- **Neural Network Architecture**: Adjusting the number of hidden layers and neurons to optimize performance.  
+- **Training Visualization**: Using plots to track training and validation loss/accuracy over epochs.  
+- **Performance Evaluation**: Leveraging metrics like confusion matrices and test accuracy for evaluation.
+
+---
+
+#### **Instructions for Running on Google Colab**
+1. **Setup Environment**: Ensure necessary libraries like TensorFlow, NumPy, Scikit-learn, and Matplotlib are installed in the Colab environment.
+2. **Run the Notebook**: Execute each code cell sequentially.  
+3. **Outputs**:
+   - Training and validation loss/accuracy plots will be displayed after training.
+   - Confusion matrices will be visualized for both tasks.
+4. **Analyze Results**: Compare the results of the original and modified networks for the Iris dataset and evaluate the Wine dataset performance.
+
+---
+
+#### **Conclusion**
+This project highlights the importance of:
+- Adjusting neural network architecture for different datasets.
+- Using visualization tools to understand model performance.
+- Preprocessing steps in ensuring consistent results across datasets.  
+

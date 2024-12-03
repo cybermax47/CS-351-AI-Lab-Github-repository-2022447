@@ -1,15 +1,15 @@
-### **README: Neural Network Tasks with Iris and Wine Datasets**
+# **Neural Network Tasks with Iris and Wine Datasets**
 
 ---
 
-#### **Overview**
+## **Overview**
 This project demonstrates building, training, and evaluating neural networks on two well-known datasets: **Iris** and **Wine**. The tasks involve modifying the architecture of the neural network and analyzing its performance. The project showcases concepts like data preprocessing, training visualization, and performance evaluation through metrics like confusion matrices and training history.
 
 ---
 
-#### **Tasks Overview**
+## **Tasks Overview**
 
-##### **Task 1: Iris Dataset - Modify the Neural Network**
+### **Task 1: Iris Dataset - Modify the Neural Network**
 1. **Objective**:  
    To evaluate the effect of modifying a simple neural network by adding an additional hidden layer.
    
@@ -32,7 +32,7 @@ This project demonstrates building, training, and evaluating neural networks on 
 
 ---
 
-##### **Task 2: Wine Dataset - Build and Train a Neural Network**
+### **Task 2: Wine Dataset - Build and Train a Neural Network**
 1. **Objective**:  
    To build and train a neural network for classification using the Wine dataset, exploring a more complex feature space.
 
@@ -56,7 +56,7 @@ This project demonstrates building, training, and evaluating neural networks on 
 
 ---
 
-#### **Results and Observations**
+## **Results and Observations**
 1. **Iris Dataset**:  
    - Adding an additional hidden layer improved the test accuracy slightly due to increased model capacity.
    - The model was simple enough to perform well on the Iris dataset even with fewer layers.  
@@ -67,7 +67,7 @@ This project demonstrates building, training, and evaluating neural networks on 
 
 ---
 
-#### **Key Concepts Demonstrated**
+## **Key Concepts Demonstrated**
 - **Data Preprocessing**: Standardization and one-hot encoding for preparing data.  
 - **Neural Network Architecture**: Adjusting the number of hidden layers and neurons to optimize performance.  
 - **Training Visualization**: Using plots to track training and validation loss/accuracy over epochs.  
@@ -75,7 +75,7 @@ This project demonstrates building, training, and evaluating neural networks on 
 
 ---
 
-#### **Instructions for Running on Google Colab**
+## **Instructions for Running on Google Colab**
 1. **Setup Environment**: Ensure necessary libraries like TensorFlow, NumPy, Scikit-learn, and Matplotlib are installed in the Colab environment.
 2. **Run the Notebook**: Execute each code cell sequentially.  
 3. **Outputs**:
@@ -85,9 +85,8 @@ This project demonstrates building, training, and evaluating neural networks on 
 
 ---
 
-#### **Conclusion**
+## **Conclusion**
 This project highlights the importance of:
 - Adjusting neural network architecture for different datasets.
 - Using visualization tools to understand model performance.
-- Preprocessing steps in ensuring consistent results across datasets.  
-
+- Preprocessing steps in ensuring consistent results across datasets.

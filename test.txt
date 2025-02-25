@@ -1,0 +1,516 @@
+##Basics of neural network
+# Importing necessary libraries
+import numpy as np  # For numerical computations
+import pandas as pd  # For handling datasets
+from sklearn.model_selection import train_test_split  # For splitting data into train/test sets
+from sklearn.preprocessing import LabelBinarizer, StandardScaler  # For preprocessing data
+from sklearn.metrics import classification_report, ConfusionMatrixDisplay  # For evaluating model performance
+import tensorflow as tf  # For building and training the neural network
+from tensorflow.keras.models import Sequential  # Sequential model API in Keras
+from tensorflow.keras.layers import Dense  # Fully connected layers in Keras
+import matplotlib.pyplot as plt  # For visualizations
+
+Data set used We will use the Iris dataset for classification.
+
+# Ensuring reproducibility by setting random seeds
+np.random.seed(42)
+tf.random.set_seed(42)
+# Load the Iris dataset
+from sklearn.datasets import load_iris  # Iris dataset is part of scikit-learn
+iris = load_iris()  # Load the dataset into memory
+X = iris.data  # Features
+y = iris.target  # Target labels
+target_names = iris.target_names  # Names of target classes
+
+# One-hot encode the labels (convert categorical to binary vectors)
+encoder = LabelBinarizer()  # Initialize encoder
+y_encoded = encoder.fit_transform(y)  # Fit and transform labels
+
+# Standardize the features (scale to have mean 0 and variance 1)
+scaler = StandardScaler()  # Initialize scaler
+X_scaled = scaler.fit_transform(X)  # Fit and transform features
+
+# Split the data into training and testing sets
+X_train, X_test, y_train, y_test = train_test_split(X_scaled, y_encoded, test_size=0.3, random_state=42)
+
+# Print the number of samples in training and testing sets
+print(f"Training samples: {X_train.shape[0]}, Testing samples: {X_test.shape[0]}")
+
+Build neural network
+We will use the Keras API to build a simple feedforward neural network.
+
+# Build the neural network
+model = Sequential([
+    Dense(8, activation='relu', input_shape=(X_train.shape[1],), name="Hidden_Layer_1"),  # First hidden layer with ReLU activation
+    Dense(8, activation='relu', name="Hidden_Layer_2"),  # Second hidden layer with ReLU activation
+    Dense(y_train.shape[1], activation='softmax', name="Output_Layer")  # Output layer with softmax for classification
+])
+
+# Compile the model
+model.compile(optimizer='adam',  # Adam optimizer for efficient training
+              loss='categorical_crossentropy',  # Loss function for multi-class classification
+              metrics=['accuracy'])  # Metric to evaluate model accuracy
+
+# Display a summary of the model structure
+model.summary()
+
+Visualize the training progress using loss and accuracy plots.
+# Train the model
+history = model.fit(X_train, y_train, epochs=50, validation_split=0.2, batch_size=8, verbose=1)
+
+# Plot training history
+plt.figure(figsize=(12, 5))  # Set figure size
+
+# Loss plot
+plt.subplot(1, 2, 1)  # First subplot for loss
+plt.plot(history.history['loss'], label='Training Loss')  # Training loss
+plt.plot(history.history['val_loss'], label='Validation Loss')  # Validation loss
+plt.title('Loss over Epochs')  # Title of the plot
+plt.xlabel('Epochs')  # X-axis label
+plt.ylabel('Loss')  # Y-axis label
+plt.legend()  # Display legend
+
+# Accuracy plot
+plt.subplot(1, 2, 2)  # Second subplot for accuracy
+plt.plot(history.history['accuracy'], label='Training Accuracy')  # Training accuracy
+plt.plot(history.history['val_accuracy'], label='Validation Accuracy')  # Validation accuracy
+plt.title('Accuracy over Epochs')  # Title of the plot
+plt.xlabel('Epochs')  # X-axis label
+plt.ylabel('Accuracy')  # Y-axis label
+plt.legend()  # Display legend
+
+plt.tight_layout()  # Adjust layout to prevent overlap
+plt.show()  # Show the plots
+
+
+Evaluate the model on the test data and visualize the confusion matrix.
+
+# Evaluate the model on test data
+test_loss, test_accuracy = model.evaluate(X_test, y_test, verbose=0)  # Evaluate without verbose output
+print(f"Test Loss: {test_loss:.4f}, Test Accuracy: {test_accuracy:.4f}")  # Print test loss and accuracy
+
+# Generate predictions for test data
+y_pred = model.predict(X_test)  # Predicted probabilities for each class
+y_pred_classes = np.argmax(y_pred, axis=1)  # Convert probabilities to class labels
+y_true_classes = np.argmax(y_test, axis=1)  # Convert one-hot encoded labels to class labels
+
+# Print classification report
+print("Classification Report:")
+print(classification_report(y_true_classes, y_pred_classes, target_names=target_names))
+
+# Visualize confusion matrix
+ConfusionMatrixDisplay.from_predictions(y_true_classes, y_pred_classes, display_labels=target_names, cmap="Blues")
+plt.title("Confusion Matrix")
+plt.show()
+
+
+Visualize the Neural Network Architecture
+Display the architecture of the neural network using Keras utilities.
+
+# Visualize the model architecture
+from tensorflow.keras.utils import plot_model  # Utility to plot model architecture
+
+# Save the architecture plot
+plot_model(model, show_shapes=True, show_layer_names=True, to_file='model_architecture.png')  # Save as PNG
+
+# Display the saved image
+from IPython.display import Image
+Image(filename='model_architecture.png')
+
+#############################################################################
+
+
+Step 1: Import Required Libraries
+We will use TensorFlow/Keras for building and training neural networks.
+
+
+
+# Importing necessary libraries
+import numpy as np  # For numerical operations
+import pandas as pd  # For data handling
+from sklearn.model_selection import train_test_split  # For splitting data
+from sklearn.preprocessing import LabelBinarizer, StandardScaler  # For preprocessing
+from sklearn.metrics import ConfusionMatrixDisplay, classification_report  # For evaluation
+import tensorflow as tf  # For building and training models
+from tensorflow.keras.models import Sequential  # Sequential model API
+from tensorflow.keras.layers import Dense, Dropout  # Layers for the neural network
+from tensorflow.keras.regularizers import l1, l2  # Regularization
+import matplotlib.pyplot as plt  # For visualizations
+
+# Ensure reproducibility
+np.random.seed(42)
+tf.random.set_seed(42)
+
+     
+Step 2: Load the Dataset and Visualize Raw Data
+We will use the Iris dataset as an example and visualize its raw features.
+
+
+
+# Load the Iris dataset
+from sklearn.datasets import load_iris
+iris = load_iris()
+X = iris.data  # Features
+y = iris.target  # Target labels
+target_names = iris.target_names  # Class names
+
+# Convert to DataFrame for visualization
+df = pd.DataFrame(X, columns=iris.feature_names)
+df['target'] = y
+
+# Visualize raw features
+plt.figure(figsize=(10, 6))
+for i, feature in enumerate(iris.feature_names):
+    plt.subplot(2, 2, i + 1)
+    for target in np.unique(y):
+        plt.hist(df[df['target'] == target][feature], alpha=0.5, label=target_names[target])
+    plt.title(feature)
+    plt.xlabel('Value')
+    plt.ylabel('Frequency')
+plt.tight_layout()
+plt.legend()
+plt.show()
+
+     
+
+Step 3: Preprocess the Data and Visualize
+We will standardize the features and one-hot encode the target labels.
+
+
+
+# One-hot encode the target labels
+encoder = LabelBinarizer()
+y_encoded = encoder.fit_transform(y)
+
+# Standardize the features
+scaler = StandardScaler()
+X_scaled = scaler.fit_transform(X)
+
+# Visualize standardized features
+plt.figure(figsize=(10, 6))
+for i in range(X_scaled.shape[1]):
+    plt.subplot(2, 2, i + 1)
+    plt.boxplot(X_scaled[:, i], vert=False)
+    plt.title(iris.feature_names[i])
+    plt.xlabel('Standardized Value')
+plt.tight_layout()
+plt.show()
+
+     
+
+Step 4: Split Data into Training and Testing Sets
+Split the data into training and testing sets and prepare for modeling.
+
+
+
+# Split the data into training and testing sets
+X_train, X_test, y_train, y_test = train_test_split(X_scaled, y_encoded, test_size=0.3, random_state=42)
+
+# Visualize the size of the training and testing sets
+print(f"Training set size: {X_train.shape[0]} samples")
+print(f"Testing set size: {X_test.shape[0]} samples")
+
+     
+Training set size: 105 samples
+Testing set size: 45 samples
+
+
+# Load the Iris dataset
+from sklearn.datasets import load_iris
+iris = load_iris()
+X = iris.data  # Features
+y = iris.target  # Target labels
+target_names = iris.target_names  # Class names
+
+# One-hot encode the target labels
+encoder = LabelBinarizer()
+y_encoded = encoder.fit_transform(y)
+
+# Standardize the features
+scaler = StandardScaler()
+X_scaled = scaler.fit_transform(X)
+
+# Split the data into training and testing sets
+X_train, X_test, y_train, y_test = train_test_split(X_scaled, y_encoded, test_size=0.3, random_state=42)
+
+     
+Step 3: Build and Train Models
+We will build multiple models:
+
+Baseline Model: No regularization.
+Dropout Regularization.
+L1 Regularization.
+L2 Regularization.
+
+
+# Function to build a baseline model
+def build_baseline_model(input_dim, output_dim):
+    model = Sequential([
+        Dense(8, activation='relu', input_shape=(input_dim,)),  # Hidden layer
+        Dense(output_dim, activation='softmax')  # Output layer
+    ])
+    model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])  # Compile the model
+    return model
+
+# Function to build a model with Dropout
+def build_dropout_model(input_dim, output_dim):
+    model = Sequential([
+        Dense(8, activation='relu', input_shape=(input_dim,)),
+        Dropout(0.5),  # Dropout layer with 50% dropout rate
+        Dense(output_dim, activation='softmax')
+    ])
+    model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
+    return model
+
+# Function to build a model with L1 regularization
+def build_l1_model(input_dim, output_dim):
+    model = Sequential([
+        Dense(8, activation='relu', input_shape=(input_dim,), kernel_regularizer=l1(0.01)),  # L1 regularization
+        Dense(output_dim, activation='softmax')
+    ])
+    model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
+    return model
+
+# Function to build a model with L2 regularization
+def build_l2_model(input_dim, output_dim):
+    model = Sequential([
+        Dense(8, activation='relu', input_shape=(input_dim,), kernel_regularizer=l2(0.01)),  # L2 regularization
+        Dense(output_dim, activation='softmax')
+    ])
+    model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
+    return model
+
+     
+Step 4: Train and Compare Models
+We will train each model for 50 epochs and visualize their performance.
+
+
+
+# Initialize models
+baseline_model = build_baseline_model(X_train.shape[1], y_train.shape[1])
+dropout_model = build_dropout_model(X_train.shape[1], y_train.shape[1])
+l1_model = build_l1_model(X_train.shape[1], y_train.shape[1])
+l2_model = build_l2_model(X_train.shape[1], y_train.shape[1])
+
+# Train models
+history_baseline = baseline_model.fit(X_train, y_train, epochs=50, validation_split=0.2, verbose=0)
+history_dropout = dropout_model.fit(X_train, y_train, epochs=50, validation_split=0.2, verbose=0)
+history_l1 = l1_model.fit(X_train, y_train, epochs=50, validation_split=0.2, verbose=0)
+history_l2 = l2_model.fit(X_train, y_train, epochs=50, validation_split=0.2, verbose=0)
+
+     
+/usr/local/lib/python3.10/dist-packages/keras/src/layers/core/dense.py:87: UserWarning: Do not pass an `input_shape`/`input_dim` argument to a layer. When using Sequential models, prefer using an `Input(shape)` object as the first layer in the model instead.
+  super().__init__(activity_regularizer=activity_regularizer, **kwargs)
+Step 5: Visualize Training Results
+We will compare loss and accuracy for all models.
+
+
+
+# Function to plot training and validation results
+def plot_history(histories, labels):
+    plt.figure(figsize=(14, 6))
+
+    # Plot loss
+    plt.subplot(1, 2, 1)
+    for history, label in zip(histories, labels):
+        plt.plot(history.history['loss'], label=f'{label} - Training Loss')
+        plt.plot(history.history['val_loss'], linestyle='dashed', label=f'{label} - Validation Loss')
+    plt.title('Loss Over Epochs')
+    plt.xlabel('Epochs')
+    plt.ylabel('Loss')
+    plt.legend()
+
+    # Plot accuracy
+    plt.subplot(1, 2, 2)
+    for history, label in zip(histories, labels):
+        plt.plot(history.history['accuracy'], label=f'{label} - Training Accuracy')
+        plt.plot(history.history['val_accuracy'], linestyle='dashed', label=f'{label} - Validation Accuracy')
+    plt.title('Accuracy Over Epochs')
+    plt.xlabel('Epochs')
+    plt.ylabel('Accuracy')
+    plt.legend()
+
+    plt.tight_layout()
+    plt.show()
+
+# Compare all models
+plot_history(
+    [history_baseline, history_dropout, history_l1, history_l2],
+    ['Baseline', 'Dropout', 'L1', 'L2']
+)
+
+     
+
+Step 6: Evaluate Models on Test Data
+Evaluate each model and visualize the confusion matrix.
+
+
+
+# Evaluate models on test data
+models = [baseline_model, dropout_model, l1_model, l2_model]
+labels = ['Baseline', 'Dropout', 'L1', 'L2']
+
+for model, label in zip(models, labels):
+    print(f"Evaluating {label} Model")
+    test_loss, test_accuracy = model.evaluate(X_test, y_test, verbose=0)
+    print(f"Test Loss: {test_loss:.4f}, Test Accuracy: {test_accuracy:.4f}")
+    y_pred = model.predict(X_test)
+    y_pred_classes = np.argmax(y_pred, axis=1)
+    y_true_classes = np.argmax(y_test, axis=1)
+    ConfusionMatrixDisplay.from_predictions(y_true_classes, y_pred_classes, display_labels=target_names, cmap="Blues")
+    plt.title(f"Confusion Matrix - {label} Model")
+    plt.show()
+
+     
+Evaluating Baseline Model
+Test Loss: 0.6661, Test Accuracy: 0.8444
+2/2 ━━━━━━━━━━━━━━━━━━━━ 0s 29ms/step
+
+Evaluating Dropout Model
+Test Loss: 0.6774, Test Accuracy: 0.7333
+2/2 ━━━━━━━━━━━━━━━━━━━━ 0s 38ms/Step
+###################################################################################
+
+Lab 11: Advanced Model Evaluation and Hyperparameter Tuning
+In this lab, we will explore advanced techniques for evaluating machine learning models and optimizing their performance.
+
+Learning Objectives:
+
+Understand and compute advanced model evaluation metrics beyond accuracy (e.g., precision, recall, F1-score, ROC-AUC).
+Implement k-fold and stratified k-fold cross-validation to ensure robust model evaluation.
+Perform hyperparameter tuning using Grid Search and Random Search.
+Step 1: Import Libraries and Load Dataset
+
+# Import required libraries
+import numpy as np
+import pandas as pd
+from sklearn.model_selection import train_test_split, KFold, StratifiedKFold, GridSearchCV, RandomizedSearchCV
+from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, roc_auc_score, classification_report
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.datasets import load_breast_cancer
+
+# Load the Breast Cancer dataset
+data = load_breast_cancer()
+X = data.data  # Features
+y = data.target  # Labels
+
+# Split into training and testing sets
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42, stratify=y)
+
+print(f"Training samples: {X_train.shape[0]}, Testing samples: {X_test.shape[0]}")
+     
+Training samples: 455, Testing samples: 114
+Step 2: Evaluate Model with Advanced Metrics
+
+# Train a simple Random Forest Classifier
+model = RandomForestClassifier(random_state=42)
+model.fit(X_train, y_train)
+
+# Predict on the test set
+y_pred = model.predict(X_test)
+y_proba = model.predict_proba(X_test)[:, 1]  # Probabilities for ROC-AUC
+
+# Calculate evaluation metrics
+accuracy = accuracy_score(y_test, y_pred)
+precision = precision_score(y_test, y_pred)
+recall = recall_score(y_test, y_pred)
+f1 = f1_score(y_test, y_pred)
+roc_auc = roc_auc_score(y_test, y_proba)
+
+print(f"Accuracy: {accuracy:.2f}")
+print(f"Precision: {precision:.2f}")
+print(f"Recall: {recall:.2f}")
+print(f"F1 Score: {f1:.2f}")
+print(f"ROC-AUC Score: {roc_auc:.2f}")
+
+# Display a detailed classification report
+print("\nClassification Report:\n", classification_report(y_test, y_pred))
+     
+Accuracy: 0.96
+Precision: 0.96
+Recall: 0.97
+F1 Score: 0.97
+ROC-AUC Score: 0.99
+
+Classification Report:
+               precision    recall  f1-score   support
+
+           0       0.95      0.93      0.94        42
+           1       0.96      0.97      0.97        72
+
+    accuracy                           0.96       114
+   macro avg       0.96      0.95      0.95       114
+weighted avg       0.96      0.96      0.96       114
+
+Step 3: Cross-Validation Techniques
+
+# Perform k-fold cross-validation
+kf = KFold(n_splits=5, shuffle=True, random_state=42)
+fold_accuracies = []
+
+for train_index, val_index in kf.split(X_train):
+    X_fold_train, X_fold_val = X_train[train_index], X_train[val_index]
+    y_fold_train, y_fold_val = y_train[train_index], y_train[val_index]
+
+    model = RandomForestClassifier(random_state=42)
+    model.fit(X_fold_train, y_fold_train)
+    y_fold_pred = model.predict(X_fold_val)
+    fold_accuracies.append(accuracy_score(y_fold_val, y_fold_pred))
+
+print(f"K-Fold Cross-Validation Accuracies: {fold_accuracies}")
+print(f"Mean Accuracy: {np.mean(fold_accuracies):.2f}")
+     
+K-Fold Cross-Validation Accuracies: [0.9340659340659341, 0.967032967032967, 0.967032967032967, 0.989010989010989, 0.9230769230769231]
+Mean Accuracy: 0.96
+
+# Perform stratified k-fold cross-validation
+skf = StratifiedKFold(n_splits=5, shuffle=True, random_state=42)
+stratified_accuracies = []
+
+for train_index, val_index in skf.split(X_train, y_train):
+    X_fold_train, X_fold_val = X_train[train_index], X_train[val_index]
+    y_fold_train, y_fold_val = y_train[train_index], y_train[val_index]
+
+    model = RandomForestClassifier(random_state=42)
+    model.fit(X_fold_train, y_fold_train)
+    y_fold_pred = model.predict(X_fold_val)
+    stratified_accuracies.append(accuracy_score(y_fold_val, y_fold_pred))
+
+print(f"Stratified K-Fold Accuracies: {stratified_accuracies}")
+print(f"Mean Stratified Accuracy: {np.mean(stratified_accuracies):.2f}")
+     
+Stratified K-Fold Accuracies: [0.967032967032967, 0.9560439560439561, 0.9340659340659341, 0.967032967032967, 0.989010989010989]
+Mean Stratified Accuracy: 0.96
+Step 4: Hyperparameter Tuning
+
+# Perform Grid Search for hyperparameter tuning
+param_grid = {
+    'n_estimators': [50, 100, 200],
+    'max_depth': [None, 10, 20],
+    'min_samples_split': [2, 5, 10]
+}
+
+grid_search = GridSearchCV(RandomForestClassifier(random_state=42), param_grid, cv=5, scoring='accuracy')
+grid_search.fit(X_train, y_train)
+
+print("Best Parameters from Grid Search:", grid_search.best_params_)
+print("Best Cross-Validation Accuracy:", grid_search.best_score_)
+     
+Best Parameters from Grid Search: {'max_depth': None, 'min_samples_split': 2, 'n_estimators': 200}
+Best Cross-Validation Accuracy: 0.9604395604395606
+
+# Perform Random Search for hyperparameter tuning
+param_dist = {
+    'n_estimators': [10, 50, 100, 200],
+    'max_depth': [None, 10, 20, 30],
+    'min_samples_split': [2, 5, 10, 15]
+}
+
+random_search = RandomizedSearchCV(RandomForestClassifier(random_state=42), param_dist, n_iter=10, cv=5, scoring='accuracy', random_state=42)
+random_search.fit(X_train, y_train)
+
+print("Best Parameters from Random Search:", random_search.best_params_)
+print("Best Cross-Validation Accuracy:", random_search.best_score_)
+     
+Best Parameters from Random Search: {'n_estimators': 50, 'min_samples_split': 5, 'max_depth': None}
+Best Cross-Validation Accuracy: 0.9582417582417584
